@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var score = 0
 
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -34,9 +35,15 @@ struct ContentView: View {
             }
             .navigationTitle(rootWord)
             .toolbar {
-                Button("Restart game") {
-                    startGame()
-                    usedWords.removeAll()
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("Score: \(score)")
+                        .font(.headline)
+                }
+                ToolbarItem {
+                    Button("Restart game") {
+                        startGame()
+                        usedWords.removeAll()
+                    }
                 }
             }
             .onSubmit(addNewWord)
@@ -80,6 +87,7 @@ struct ContentView: View {
         withAnimation {
             usedWords.insert(answer, at: 0)
         }
+        calculateScore(word: answer)
 
         newWord = ""
     }
@@ -93,6 +101,18 @@ struct ContentView: View {
             }
         }
         fatalError("Could not load start.txt from bundle.")
+    }
+
+    func calculateScore(word: String) {
+        score += 3
+
+        if usedWords.count > 2 {
+            score += 2
+        }
+
+        if word.count > 3 {
+            score += 5
+        }
     }
 
     func isOriginal(word: String) -> Bool {
