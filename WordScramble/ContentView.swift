@@ -40,9 +40,10 @@ struct ContentView: View {
                         .font(.headline)
                 }
                 ToolbarItem {
-                    Button("Replace word") {
+                    Button("Restart game") {
                         startGame()
                         usedWords.removeAll()
+                        score = 0
                     }
                 }
             }
